@@ -34,8 +34,11 @@
     [super awakeFromNib];
     
     _videoPlayerView.controlsStyle = AVPlayerViewControlsStyleNone;
-    
-    [_videoWindow setFrame:[[[NSScreen screens] objectAtIndex:1] frame] display:YES];
+    NSRect frameRect = NSMakeRect(0, 0, 320, 240);
+    if ([[NSScreen screens] count] > 1) {
+        frameRect = [[[NSScreen screens] objectAtIndex:1] frame];
+    }
+    [_videoWindow setFrame:frameRect display:YES];
     [_videoWindow setLevel:NSStatusWindowLevel];
     [_videoWindow orderFront:nil];
 }
