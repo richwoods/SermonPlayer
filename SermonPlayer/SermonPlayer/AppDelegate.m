@@ -56,6 +56,7 @@
         } else {
             [_videoPlayerView setPlayer:[AVPlayer playerWithURL:videoFileURL]];
         }
+        _videoPlayerView.player.actionAtItemEnd = AVPlayerActionAtItemEndPause;
         [_videoPlayerView.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1, 1) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
             [self _updateTimeLabels:time];
         }];
