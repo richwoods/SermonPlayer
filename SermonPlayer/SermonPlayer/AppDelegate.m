@@ -18,8 +18,7 @@
 @property (nonatomic, weak) IBOutlet NSTextField * elapsedTimeLabel;
 @property (nonatomic, weak) IBOutlet NSTextField * remainingTimeLabel;
 @property (nonatomic, weak) IBOutlet NSSlider * volumeSlider;
-@property (nonatomic, weak) IBOutlet NSButton * playButton;
-@property (nonatomic, weak) IBOutlet NSButton * pauseButton;
+@property (nonatomic, weak) IBOutlet NSButton * playPauseButton;
 @property (nonatomic, weak) IBOutlet NSButton * resetButton;
 
 @end
@@ -60,6 +59,7 @@
             [_videoPlayerView setPlayer:[AVPlayer playerWithURL:videoFileURL]];
         }
         _videoPlayerView.player.actionAtItemEnd = AVPlayerActionAtItemEndPause;
+        [_playPauseButton setImage:[NSImage imageNamed:@"play"]];
         [_videoPlayerView.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1, 1) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
             [self _updateTimeLabels:time];
         }];
@@ -77,14 +77,21 @@
     CGFloat secondsRemaining = CMTimeGetSeconds(_videoPlayerView.player.currentItem.duration) - secondsElapsed;
     [self->_elapsedTimeLabel setStringValue:[self _stringValueForSeconds:secondsElapsed]];
     [self->_remainingTimeLabel setStringValue:[NSString stringWithFormat:@"-%@", [self _stringValueForSeconds:secondsRemaining]]];
+    if ([_videoPlayerView.player rate] != 0.0) {
+        [_playPauseButton setImage:[NSImage imageNamed:@"pause"]];
+    } else {
+        [_playPauseButton setImage:[NSImage imageNamed:@"play"]];
+    }
 }
 
-- (IBAction)play:(id)sender {
-    [_videoPlayerView.player play];
-}
-
-- (IBAction)pause:(id)sender {
-    [_videoPlayerView.player pause];
+- (IBAction)togglePlayback:(id)sender {
+    if ([_videoPlayerView.player rate] != 0.0) {
+        [_videoPlayerView.player pause];
+        [_playPauseButton setImage:[NSImage imageNamed:@"play"]];
+    } else {
+        [_videoPlayerView.player play];
+        [_playPauseButton setImage:[NSImage imageNamed:@"pause"]];
+    }
 }
 
 - (IBAction)resetPlayer:(id)sender {
