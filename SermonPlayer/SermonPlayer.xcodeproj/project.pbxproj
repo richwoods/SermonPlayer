@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0AA03CF5213B3A7800E9DB13 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AA03CF3213B3A7800E9DB13 /* AppKit.framework */; };
+		0AA03CF6213B3A7800E9DB13 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AA03CF4213B3A7800E9DB13 /* AVKit.framework */; };
 		58F28678213AF76B0013A2C4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F28677213AF76B0013A2C4 /* AppDelegate.m */; };
 		58F2867A213AF76D0013A2C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 58F28679213AF76D0013A2C4 /* Assets.xcassets */; };
 		58F2867D213AF76D0013A2C4 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58F2867B213AF76D0013A2C4 /* MainMenu.xib */; };
@@ -14,6 +16,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0AA03CF3213B3A7800E9DB13 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		0AA03CF4213B3A7800E9DB13 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		58F28673213AF76B0013A2C4 /* SermonPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SermonPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		58F28676213AF76B0013A2C4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		58F28677213AF76B0013A2C4 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -29,17 +33,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AA03CF5213B3A7800E9DB13 /* AppKit.framework in Frameworks */,
+				0AA03CF6213B3A7800E9DB13 /* AVKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0AA03CF2213B3A7800E9DB13 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0AA03CF3213B3A7800E9DB13 /* AppKit.framework */,
+				0AA03CF4213B3A7800E9DB13 /* AVKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		58F2866A213AF76B0013A2C4 = {
 			isa = PBXGroup;
 			children = (
 				58F28675213AF76B0013A2C4 /* SermonPlayer */,
 				58F28674213AF76B0013A2C4 /* Products */,
+				0AA03CF2213B3A7800E9DB13 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
