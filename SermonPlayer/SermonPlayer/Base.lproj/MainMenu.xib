@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.AVKitIBPlugin" version="14113"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.AVKitIBPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,7 +16,9 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
             <connections>
+                <outlet property="durationSlider" destination="1te-98-9fi" id="baQ-zV-TbP"/>
                 <outlet property="elapsedTimeLabel" destination="7CI-g6-1tu" id="1J6-Oi-nNp"/>
+                <outlet property="filenameLabel" destination="Qjo-Cn-QM5" id="w6u-jE-Nmi"/>
                 <outlet property="playPauseButton" destination="LUz-dU-zBh" id="gM7-8M-ygj"/>
                 <outlet property="remainingTimeLabel" destination="PYK-zS-ypc" id="1Rq-9O-ODL"/>
                 <outlet property="resetButton" destination="c65-0F-K3E" id="JZq-Dp-RCk"/>
@@ -92,13 +93,13 @@
         <window title="SermonPlayer" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="335" y="390" width="480" height="217"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="217"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7CI-g6-1tu">
-                        <rect key="frame" x="18" y="167" width="71" height="30"/>
+                        <rect key="frame" x="18" y="144" width="71" height="30"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="00:00" id="rFw-M5-f0E">
                             <font key="font" metaFont="system" size="25"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -106,7 +107,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PYK-zS-ypc">
-                        <rect key="frame" x="380" y="167" width="82" height="30"/>
+                        <rect key="frame" x="380" y="144" width="82" height="30"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="-00:00" id="fXl-MG-VM0">
                             <font key="font" metaFont="system" size="25"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -114,7 +115,10 @@
                         </textFieldCell>
                     </textField>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="shg-gJ-ciX">
-                        <rect key="frame" x="14" y="13" width="120" height="32"/>
+                        <rect key="frame" x="14" y="13" width="134" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="122" id="2Rh-4F-lyc"/>
+                        </constraints>
                         <buttonCell key="cell" type="push" title="Choose file..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="mw5-GF-cSA">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -167,19 +171,40 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1te-98-9fi">
+                        <rect key="frame" x="18" y="180" width="444" height="19"/>
+                        <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="ykc-cW-YYg"/>
+                        <connections>
+                            <action selector="updatePlayhead:" target="Voe-Tx-rLC" id="T7q-1l-3Ca"/>
+                        </connections>
+                    </slider>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Qjo-Cn-QM5">
+                        <rect key="frame" x="150" y="23" width="172" height="17"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="nkQ-6Y-yfE">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="shg-gJ-ciX" secondAttribute="bottom" constant="20" id="5vb-gR-pvj"/>
+                    <constraint firstItem="1te-98-9fi" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="8bY-aZ-v1a"/>
                     <constraint firstItem="LUz-dU-zBh" firstAttribute="height" secondItem="c65-0F-K3E" secondAttribute="height" id="9Hw-XV-kMa"/>
-                    <constraint firstItem="PYK-zS-ypc" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" id="Ajl-3p-khA"/>
-                    <constraint firstItem="7CI-g6-1tu" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" id="Gfs-fs-zaH"/>
                     <constraint firstItem="LUz-dU-zBh" firstAttribute="centerY" secondItem="EiT-Mj-1SZ" secondAttribute="centerY" id="Gte-SF-rKo"/>
+                    <constraint firstAttribute="trailing" secondItem="1te-98-9fi" secondAttribute="trailing" constant="20" id="N7S-a5-YrN"/>
                     <constraint firstItem="LUz-dU-zBh" firstAttribute="width" secondItem="c65-0F-K3E" secondAttribute="width" id="O2M-Te-C2t"/>
                     <constraint firstItem="ds4-YP-MKD" firstAttribute="top" secondItem="G5z-os-JLf" secondAttribute="bottom" constant="-5" id="SN9-zo-FV2"/>
                     <constraint firstItem="7CI-g6-1tu" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="VAy-pB-evp"/>
+                    <constraint firstItem="7CI-g6-1tu" firstAttribute="top" secondItem="1te-98-9fi" secondAttribute="bottom" constant="8" id="YTd-eI-CYh"/>
                     <constraint firstAttribute="trailing" secondItem="PYK-zS-ypc" secondAttribute="trailing" constant="20" id="YTi-tQ-eke"/>
+                    <constraint firstItem="Qjo-Cn-QM5" firstAttribute="leading" secondItem="shg-gJ-ciX" secondAttribute="trailing" constant="10" id="fGf-MN-ih4"/>
+                    <constraint firstItem="ds4-YP-MKD" firstAttribute="leading" secondItem="Qjo-Cn-QM5" secondAttribute="trailing" constant="8" id="jVS-le-d5b"/>
+                    <constraint firstItem="PYK-zS-ypc" firstAttribute="top" secondItem="1te-98-9fi" secondAttribute="bottom" constant="8" id="mrp-Zi-4kd"/>
+                    <constraint firstAttribute="bottom" secondItem="Qjo-Cn-QM5" secondAttribute="bottom" constant="23" id="n5j-by-XFQ"/>
                     <constraint firstAttribute="bottom" secondItem="ds4-YP-MKD" secondAttribute="bottom" constant="20" id="oBD-vC-Hvh"/>
                     <constraint firstItem="LUz-dU-zBh" firstAttribute="leading" secondItem="c65-0F-K3E" secondAttribute="trailing" constant="23" id="plH-rh-R6J"/>
+                    <constraint firstItem="1te-98-9fi" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" id="s9K-dG-aIY"/>
                     <constraint firstItem="shg-gJ-ciX" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="svs-W6-iTx"/>
                     <constraint firstItem="ds4-YP-MKD" firstAttribute="centerX" secondItem="G5z-os-JLf" secondAttribute="centerX" id="tfL-vs-3s8"/>
                     <constraint firstItem="LUz-dU-zBh" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="u8B-II-PTu"/>
@@ -189,9 +214,9 @@
             </view>
             <point key="canvasLocation" x="139" y="-269.5"/>
         </window>
-        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hasShadow="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" titleVisibility="hidden" id="7dg-P4-KyI">
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hasShadow="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" titleVisibility="hidden" id="7dg-P4-KyI">
             <rect key="contentRect" x="1000" y="538" width="480" height="270"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" id="YYj-Gj-sen">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

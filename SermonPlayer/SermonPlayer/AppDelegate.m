@@ -21,6 +21,10 @@
 @property (nonatomic, weak) IBOutlet NSButton * playPauseButton;
 @property (nonatomic, weak) IBOutlet NSButton * resetButton;
 
+@property (nonatomic, weak) IBOutlet NSTextField * filenameLabel;
+
+@property (nonatomic, weak) IBOutlet NSSlider * durationSlider;
+
 @end
 
 @implementation AppDelegate
@@ -40,6 +44,9 @@
     [_videoWindow setFrame:frameRect display:YES];
     [_videoWindow setLevel:NSStatusWindowLevel];
     [_videoWindow orderFront:nil];
+    
+    _filenameLabel.stringValue = @"";
+    [self _updateTimeLabels:kCMTimeZero];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
@@ -53,6 +60,7 @@
     NSModalResponse result = [openPanel runModal];
     if (result == NSModalResponseOK) {
         NSURL * videoFileURL = [openPanel URL];
+        _filenameLabel.stringValue = [[videoFileURL absoluteString] lastPathComponent];
         if (_videoPlayerView.player) {
             [_videoPlayerView.player replaceCurrentItemWithPlayerItem:[AVPlayerItem playerItemWithURL:videoFileURL]];
         } else {
@@ -63,6 +71,7 @@
         [_videoPlayerView.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1, 1) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
             [self _updateTimeLabels:time];
         }];
+        [self _updateTimeLabels:kCMTimeZero];
     }
 }
 
@@ -73,8 +82,17 @@
 }
 
 - (void)_updateTimeLabels:(CMTime)currentTime {
-    CGFloat secondsElapsed = CMTimeGetSeconds(currentTime);
-    CGFloat secondsRemaining = CMTimeGetSeconds(_videoPlayerView.player.currentItem.duration) - secondsElapsed;
+    CGFloat secondsElapsed = 0;
+    CGFloat secondsRemaining = 0;
+    CMTime duration = kCMTimeZero;
+    if (_videoPlayerView.player.currentItem) {
+        duration = _videoPlayerView.player.currentItem.duration;
+        secondsElapsed = CMTimeGetSeconds(currentTime);
+        secondsRemaining = CMTimeGetSeconds(duration) - secondsElapsed;
+    }
+    _durationSlider.maxValue = CMTimeGetSeconds(duration);
+    _durationSlider.minValue = 0;
+    _durationSlider.doubleValue = CMTimeGetSeconds(currentTime);
     [self->_elapsedTimeLabel setStringValue:[self _stringValueForSeconds:secondsElapsed]];
     [self->_remainingTimeLabel setStringValue:[NSString stringWithFormat:@"-%@", [self _stringValueForSeconds:secondsRemaining]]];
     if ([_videoPlayerView.player rate] != 0.0) {
@@ -82,6 +100,25 @@
     } else {
         [_playPauseButton setImage:[NSImage imageNamed:@"play"]];
     }
+}
+
+- (IBAction)updatePlayhead:(id)sender {
+    CMTime playerDuration = _videoPlayerView.player.currentItem.duration;
+    if (CMTIME_IS_INVALID(playerDuration)) {
+        return;
+    }
+    
+    double duration = CMTimeGetSeconds(playerDuration);
+    if (isfinite(duration)) {
+        float minValue = [_durationSlider minValue];
+        float maxValue = [_durationSlider maxValue];
+        float value = [_durationSlider doubleValue];
+        
+        double time = duration * (value - minValue) / (maxValue - minValue);
+        
+        [_videoPlayerView.player seekToTime:CMTimeMakeWithSeconds(time, NSEC_PER_SEC) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+    }
+    [_videoPlayerView.player pause];
 }
 
 - (IBAction)togglePlayback:(id)sender {
